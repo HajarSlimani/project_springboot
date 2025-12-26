@@ -1,0 +1,50 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>🌿 Connexion</h1>
+
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email"
+          class="form-control"
+          [(ngModel)]="credentials.email"
+          required
+          email
+          placeholder="votre@email.com">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password"
+          class="form-control"
+          [(ngModel)]="credentials.password"
+          required
+          placeholder="••••••••">
+      </div>
+
+      <div class="error" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading || !loginForm.valid">
+        <span *ngIf="!loading">Se connecter</span>
+        <span *ngIf="loading">
+          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          Connexion...
+        </span>
+      </button>
+    </form>
+
+    <div class="divider">OU</div>
+
+    <div id="googleBtn"></div>
+
+    <p class="link">
+      Pas de compte ? <a routerLink="/register">S'inscrire</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+﻿<div class="container">
+  <div class="form-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">{{ isEditMode ? 'Modifier la plante' : 'Nouvelle plante' }}</h2>
+      <button routerLink="/plants" class="btn btn-outline-secondary">Annuler</button>
+    </div>
+
+    <form (ngSubmit)="save()" #plantForm="ngForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nom de la plante *</label>
+            <input type="text" id="name" name="name" class="form-control" [(ngModel)]="plant.name" required placeholder="ex: Monstera">
+          </div>
+          <div class="mb-3">
+            <label for="species" class="form-label">Espèce</label>
+            <input type="text" id="species" name="species" class="form-control" [(ngModel)]="plant.species" placeholder="ex: Monstera deliciosa">
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Emplacement</label>
+            <input type="text" id="location" name="location" class="form-control" [(ngModel)]="plant.location" placeholder="ex: Salon">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="image" class="form-label">Photo</label>
+            <input type="file" id="image" class="form-control" accept="image/*" (change)="onFileSelected($event)">
+            <small class="text-muted">JPG, PNG, GIF</small>
+          </div>
+          <div class="image-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Aperçu" class="img-fluid">
+            <button type="button" (click)="removeImage()" class="btn btn-danger btn-sm mt-2">Supprimer</button>
+          </div>
+        </div>
+      </div>
+      <div class="error" *ngIf="error">{{ error }}</div>
+      <div class="form-actions">
+        <button type="button" routerLink="/plants" class="btn btn-secondary">Annuler</button>
+        <button type="submit" class="btn btn-primary" [disabled]="loading || !plantForm.valid">
+          <span *ngIf="!loading">{{ isEditMode ? 'Enregistrer' : 'Créer' }}</span>
+          <span *ngIf="loading"><span class="spinner-border spinner-border-sm me-2"></span>Enregistrement...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

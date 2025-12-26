@@ -1,0 +1,60 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>🌿 Inscription</h1>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+      <div class="mb-3">
+        <label for="username" class="form-label">Nom d'utilisateur</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username"
+          class="form-control"
+          [(ngModel)]="credentials.username"
+          required
+          placeholder="Votre nom">
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email"
+          class="form-control"
+          [(ngModel)]="credentials.email"
+          required
+          email
+          placeholder="votre@email.com">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password"
+          class="form-control"
+          [(ngModel)]="credentials.password"
+          required
+          minlength="6"
+          placeholder="Minimum 6 caractères">
+        <small class="text-muted">Au moins 6 caractères</small>
+      </div>
+
+      <div class="error" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading || !registerForm.valid">
+        <span *ngIf="!loading">S'inscrire</span>
+        <span *ngIf="loading">
+          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          Inscription...
+        </span>
+      </button>
+    </form>
+
+    <p class="link">
+      Déjà un compte ? <a routerLink="/login">Se connecter</a>
+    </p>
+  </div>
+</div>

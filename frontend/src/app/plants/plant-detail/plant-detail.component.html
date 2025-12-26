@@ -1,0 +1,116 @@
+﻿<div class="container" *ngIf="plant">
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <button routerLink="/plants" class="btn btn-back">← Retour</button>
+    <div class="header-actions">
+      <button [routerLink]="['/plants', plant.id, 'edit']" class="btn btn-success">Modifier</button>
+      <button (click)="deletePlant()" class="btn btn-danger">Supprimer</button>
+    </div>
+  </header>
+
+  <div class="plant-header">
+    <img *ngIf="plant.image" [src]="plant.image" [alt]="plant.name" class="plant-image">
+    <div class="plant-info">
+      <h1>{{ plant.name }}</h1>
+      <p><strong>Espèce:</strong> {{ plant.species || 'Non spécifiée' }}</p>
+      <p><strong>Emplacement:</strong> {{ plant.location || 'Non spécifié' }}</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <h2> Tâches d'entretien</h2>
+      <button (click)="toggleTaskForm()" class="btn btn-primary">
+        {{ showTaskForm ? 'Annuler' : '+ Ajouter tâche' }}
+      </button>
+    </div>
+
+    <div class="task-form" *ngIf="showTaskForm">
+      <form (ngSubmit)="saveTask()" class="row g-3">
+        <div class="col-md-4">
+          <input type="text" [(ngModel)]="newTask.type" name="type" class="form-control" placeholder="Type (Arrosage...)" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" [(ngModel)]="newTask.frequencyDays" name="frequency" class="form-control" placeholder="Fréquence (jours)" min="1" required>
+        </div>
+        <div class="col-md-3">
+          <input type="date" [(ngModel)]="newTask.lastDone" name="lastDone" class="form-control">
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-success w-100">Ajouter</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="empty" *ngIf="tasks.length === 0 && !showTaskForm">Aucune tâche planifiée</div>
+
+    <div class="tasks-list">
+      <div class="task-item" *ngFor="let task of tasks" [class.overdue]="isTaskOverdue(task)" [class.task-completed]="task.completed">
+        <div class="task-info">
+          <strong [class.completed-text]="task.completed">
+            <span *ngIf="task.completed" class="completed-badge">✅</span>
+            {{ task.type }}
+          </strong>
+          <p>Fréquence: tous les {{ task.frequencyDays }} jour(s)</p>
+          <p>Dernière fois: {{ task.lastDone || 'Jamais' }}</p>
+          <p *ngIf="getNextDueDate(task)">Prochaine: {{ getNextDueDate(task)!.toLocaleDateString() }}</p>
+        </div>
+        <div class="task-actions">
+          <button (click)="markTaskDone(task)" [class.task-done-animation]="taskMarkingDone.has(task.id!)" class="btn btn-success btn-sm">
+            <span *ngIf="!taskMarkingDone.has(task.id!)">✓ Fait</span>
+            <span *ngIf="taskMarkingDone.has(task.id!)">✅ Enregistré!</span>
+          </button>
+          <button (click)="deleteTask(task.id)" class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2> Journal de suivi</h2>
+      <button (click)="toggleLogForm()" class="btn btn-primary">
+        {{ showLogForm ? 'Annuler' : '+ Ajouter note' }}
+      </button>
+    </div>
+
+    <div class="log-form" *ngIf="showLogForm">
+      <form (ngSubmit)="saveLog()">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <input type="date" [(ngModel)]="newLog.date" name="date" class="form-control" required>
+          </div>
+          <div class="col-md-9">
+            <textarea [(ngModel)]="newLog.note" name="note" class="form-control" placeholder="Note..." rows="2"></textarea>
+          </div>
+          <div class="col-md-10">
+            <input type="file" accept="image/*" (change)="onLogImageSelected($event)" class="form-control">
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-success w-100">Ajouter</button>
+          </div>
+        </div>
+        <div class="image-preview mt-3" *ngIf="logImagePreview">
+          <img [src]="logImagePreview" alt="Aperçu">
+          <button type="button" (click)="removeLogImage()" class="btn btn-danger btn-sm"> Supprimer</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="empty" *ngIf="logs.length === 0 && !showLogForm">Aucune note dans le journal</div>
+
+    <div class="logs-list">
+      <div class="log-item" *ngFor="let log of logs">
+        <div class="log-date">{{ log.date | date:'dd/MM/yyyy' }}</div>
+        <img *ngIf="log.image" [src]="log.image" class="log-image">
+        <p>{{ log.note }}</p>
+        <button (click)="deleteLog(log.id)" class="btn btn-danger btn-sm">Supprimer</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="loading" *ngIf="loading">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+</div>
