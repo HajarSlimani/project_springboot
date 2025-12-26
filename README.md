@@ -3,23 +3,22 @@
 
 Plant Manager est une application web **full-stack** permettant de gérer ses plantes, suivre les tâches d’entretien, ajouter des notes et des photos, avec un système d’authentification sécurisé.
 
-Realisé par : Hajar Slimani
+Realisé par : **Hajar Slimani**
 
 ---
 
 ## Stack Technique
 
 ### Backend
-- Spring Boot 3
-- Java 17
+- Spring Boot 
 - MySQL + JPA (Hibernate)
 - Spring Security + JWT
 - OAuth2 Google
 
 ### Frontend
-- Angular 17 (Standalone Components)
+- Angular 
 - TypeScript
-- Bootstrap 5 + SCSS
+- Bootstrap + SCSS
 
 ---
 
@@ -46,16 +45,4 @@ Realisé par : Hajar Slimani
 - Ajout de photos
 - Historique chronologique
 
----
 
-##  Screenshots de l’Application
-
-> 📌 Ajouter les captures d’écran dans le dossier `/screenshots`
-
-```text
-/screenshots
- ├── login.png
- ├── register.png
- ├── dashboard.png
- ├── plant-details.png
- ├── add-plant.png
